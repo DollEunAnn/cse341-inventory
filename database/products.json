@@ -1,0 +1,14 @@
+[{
+	"itemCode": "RMTR33",
+	"itemDescription": "Voltage Relay",
+	"brand": "Schneider",
+	"price": 2180,
+	"itemType": "Component"
+},
+{
+	"itemCode": "HCE-010",
+	"itemDescription": "BZ Buzzer",
+	"brand": "Wixim",
+	"price": 220,
+	"itemType": "Consumable"
+}]

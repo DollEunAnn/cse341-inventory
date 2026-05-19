@@ -1,0 +1,33 @@
+// Localhost
+### Get all contacts
+GET http://localhost:3000/products
+
+### Get product by id
+GET http://localhost:3000/products/6a0b06e8cd235188acdd3798
+
+### Create a new product
+POST http://localhost:3000/products
+content-type: application/json
+
+{
+    "itemCode": "APZ123",
+    "itemDescription": "Tungsten Electrode",
+    "brand": "No Brand",
+    "price": 1000,
+    "itemType": "Consumable"
+}
+
+### Update a product
+PUT http://localhost:3000/products/6a0c565908c3a714c54d9cde
+content-type: application/json
+
+{
+    "itemCode": "APZ123",
+    "itemDescription": "Tungsten Electrode 2.4x150mm Red",
+    "brand": "No Brand",
+    "price": 1001,
+    "itemType": "Consumable"
+}
+
+### Delete a product
+DELETE http://localhost:3000/products/6a0c565908c3a714c54d9cde

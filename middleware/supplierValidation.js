@@ -4,7 +4,7 @@ const saveSupplier = (req, res, next) => {
   const validationRule = {
     supplierName: 'required|string',
     supplierAddress: 'required|string',
-    supplierTelephone: 'required|phone',
+    supplierTelephone: 'required|string',
     supplierPersonel: 'required|string'
   };
   validator(req.body, validationRule, {}, (err, status) => {

@@ -3,32 +3,43 @@ const { get } = require('../routes/productRoutes');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
-    const result = await mongodb
-    .getDatabase()
-    .db('inventory')
-    .collection('suppliers')
-    .find();
+    try{
+        const result = await mongodb
+        .getDatabase()
+        .db('inventory')
+        .collection('suppliers')
+        .find()
+        .toArray();
 
-    result.toArray().then((suppliers) => {
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(suppliers);
-    });
+        res.status(200).json(result);
+
+    } catch (error) {
+        res.status(400).json({ message: error});
+    }
 };
 
 const getById = async (req, res) => {
+    if(!ObjectId.isValid(req.params.id)) {
+        res.status(400).json('Must use a valid supplier id to get a supplier.');
+    }
 
-    const supplierId = new ObjectId(req.params.id);
+    try {
+        const supplierId = new ObjectId(req.params.id);
+    
+        const result = await mongodb
+        .getDatabase()
+        .db('inventory')
+        .collection('suppliers')
+        .find({_id: supplierId})
+        .toArray();
 
-    const result = await mongodb
-    .getDatabase()
-    .db('inventory')
-    .collection('suppliers')
-    .find(supplierId);
-
-    result.toArray().then((suppliers) => {
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(suppliers);
-    });
+        res.status(200).json(result);
+
+    } catch (error) {
+        res.status(400).json({ message: error});
+    }
 };
 
 const createSupplier = async (req, res) => {
@@ -53,10 +64,13 @@ const createSupplier = async (req, res) => {
 }
 
 const updateSupplier = async (req, res) => {
+    if(!ObjectId.isValid(req.params.id)) {
+        res.status(400).json('Must use a valid supplier id to update a supplier.');
+    }
 
     const supplierId = new ObjectId(req.params.id);
 
-     const supplier = {
+    const supplier = {
         supplierName: req.body.supplierName,
         supplierAddress:req.body.supplierAddress,
         supplierTelephone: req.body.supplierTelephone,
@@ -77,6 +91,9 @@ const updateSupplier = async (req, res) => {
 }
 
 const deleteSupplier = async (req, res) => {
+    if(!ObjectId.isValid(req.params.id)) {
+        res.status(400).json('Must use a valid supplier id to delete a supplier.');
+    }
 
     const supplierId = new ObjectId(req.params.id);
 

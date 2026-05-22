@@ -2,35 +2,47 @@ const mongodb = require('../database/connect');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
-    const result = await mongodb
-    .getDatabase()
-    .db('inventory')
-    .collection('products')
-    .find();
+    try {
+        const result = await mongodb
+        .getDatabase()
+        .db('inventory')
+        .collection('products')
+        .find()
+        .toArray();
 
-    result.toArray().then((products) => {
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(products);
-    });
+        res.status(200).json(result);
+
+    } catch (error) {
+        res.status(400).json({ message: error });
+    }
 };
 
 const getById = async (req, res) => {
+    if(!ObjectId.isValid(req.params.id)) {
+        res.status(400).json('Must use a valid product id to get a product.');
+    }
 
-    const productId = new ObjectId(req.params.id);
+    try {
+        const productId = new ObjectId(req.params.id);
+    
+        const result = await mongodb
+        .getDatabase()
+        .db('inventory')
+        .collection('products')
+        .find({ _id: productId })
+        .toArray();
 
-    const result = await mongodb
-    .getDatabase()
-    .db('inventory')
-    .collection('products')
-    .find(productId);
-
-    result.toArray().then((products) => {
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(products);
-    });
+        res.status(200).json(result);
+
+    } catch (error) {
+        res.status(400).json({ message: error });
+    }
 };
 
 const createProduct = async (req, res) => {
+
     const product = {
         itemCode: req.body.itemCode,
         itemDescription:req.body.itemDescription,
@@ -53,6 +65,9 @@ const createProduct = async (req, res) => {
 }
 
 const updateProduct = async (req, res) => {
+    if(!ObjectId.isValid(req.params.id)) {
+        res.status(400).json('Must use a valid product id to update a product.');
+    }
 
     const productId = new ObjectId(req.params.id);
 
@@ -78,6 +93,9 @@ const updateProduct = async (req, res) => {
 }
 
 const deleteProduct = async (req, res) => {
+    if(!ObjectId.isValid(req.params.id)) {
+        res.status(400).json('Must use a valid product id to delete a product.');
+    }
 
     const productId = new ObjectId(req.params.id);
 
@@ -92,8 +110,6 @@ const deleteProduct = async (req, res) => {
         res.status(404).json(response.error || 'Some error occurred while deleting the product.');
     }
 }
-
-
 
 module.exports = {
     getAll,

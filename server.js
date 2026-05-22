@@ -15,6 +15,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/', require('./routes'));
 
+// error handling
+process.on('uncaughtException', (err, origin) => {
+    console.log(process.stderr.fd, `Caught exception: ${err}\n` + `Exception origin: ${origin}`);
+});
+
 mongodb.initDb((err) => {
     if (err) {
         console.error(err);

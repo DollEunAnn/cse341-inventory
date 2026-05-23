@@ -42,25 +42,28 @@ const getById = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
+    try {
+        const product = {
+            itemCode: req.body.itemCode,
+            itemDescription:req.body.itemDescription,
+            brand: req.body.brand,
+            price: req.body.price,
+            itemType: req.body.itemType
+        };
 
-    const product = {
-        itemCode: req.body.itemCode,
-        itemDescription:req.body.itemDescription,
-        brand: req.body.brand,
-        price: req.body.price,
-        itemType: req.body.itemType
-    };
+        const response = await mongodb
+        .getDatabase()
+        .db('inventory')
+        .collection('products')
+        .insertOne(product); 
 
-    const response = await mongodb
-    .getDatabase()
-    .db('inventory')
-    .collection('products')
-    .insertOne(product); 
-
-    if(response.acknowledged) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(response.error || 'Some error occurred while creating the product.');
+        if(response.acknowledged) {
+            res.status(204).send();
+        } else {
+            res.status(500).json(response.error || 'Some error occurred while creating the product.');
+        }
+    } catch (error) {
+        res.status(400).json({ message: error });
     }
 }
 
@@ -69,26 +72,30 @@ const updateProduct = async (req, res) => {
         res.status(400).json('Must use a valid product id to update a product.');
     }
 
-    const productId = new ObjectId(req.params.id);
-
-    const product = {
-        itemCode: req.body.itemCode,
-        itemDescription:req.body.itemDescription,
-        brand: req.body.brand,
-        price: req.body.price,
-        itemType: req.body.itemType
-    };
-
-    const response = await mongodb
-    .getDatabase()
-    .db('inventory')
-    .collection('products')
-    .replaceOne({ _id: productId }, product); 
-
-    if(response.modifiedCount > 0) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(response.error || 'Some error occurred while updating the product.');
+    try {
+        const productId = new ObjectId(req.params.id);
+    
+        const product = {
+            itemCode: req.body.itemCode,
+            itemDescription:req.body.itemDescription,
+            brand: req.body.brand,
+            price: req.body.price,
+            itemType: req.body.itemType
+        };
+    
+        const response = await mongodb
+        .getDatabase()
+        .db('inventory')
+        .collection('products')
+        .replaceOne({ _id: productId }, product); 
+    
+        if(response.modifiedCount > 0) {
+            res.status(204).send();
+        } else {
+            res.status(500).json(response.error || 'Some error occurred while updating the product.');
+        }
+    } catch (error) {
+        res.status(400).json({ message: error });
     }
 }
 
@@ -97,17 +104,21 @@ const deleteProduct = async (req, res) => {
         res.status(400).json('Must use a valid product id to delete a product.');
     }
 
-    const productId = new ObjectId(req.params.id);
+    try{
+        const productId = new ObjectId(req.params.id);
 
-    const response = await mongodb
-    .getDatabase().db('inventory')
-    .collection('products')
-    .deleteOne({ _id: productId });
+        const response = await mongodb
+        .getDatabase().db('inventory')
+        .collection('products')
+        .deleteOne({ _id: productId });
 
-    if(response.deletedCount > 0) {
-        res.status(204).send();
-    } else {
-        res.status(404).json(response.error || 'Some error occurred while deleting the product.');
+        if(response.deletedCount > 0) {
+            res.status(204).send();
+        } else {
+            res.status(404).json(response.error || 'Some error occurred while deleting the product.');
+        }
+    } catch (error) {
+        res.status(400).json({ message: error });
     }
 }
 

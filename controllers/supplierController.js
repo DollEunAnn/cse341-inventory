@@ -43,23 +43,28 @@ const getById = async (req, res) => {
 };
 
 const createSupplier = async (req, res) => {
-    const supplier = {
-        supplierName: req.body.supplierName,
-        supplierAddress:req.body.supplierAddress,
-        supplierTelephone: req.body.supplierTelephone,
-        supplierPersonel: req.body.supplierPersonel,
-    };
+    try {
+        const supplier = {
+            supplierName: req.body.supplierName,
+            supplierAddress:req.body.supplierAddress,
+            supplierTelephone: req.body.supplierTelephone,
+            supplierPersonel: req.body.supplierPersonel,
+        };
+    
+        const response = await mongodb
+        .getDatabase()
+        .db('inventory')
+        .collection('suppliers')
+        .insertOne(supplier); 
 
-    const response = await mongodb
-    .getDatabase()
-    .db('inventory')
-    .collection('suppliers')
-    .insertOne(supplier); 
+        if(response.acknowledged) {
+            res.status(204).send();
+        } else {
+            res.status(500).json(response.error || 'Some error occurred while creating the supplier.');
+        }
 
-    if(response.acknowledged) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(response.error || 'Some error occurred while creating the supplier.');
+    } catch (error) {
+        res.status(400).json({ message: error});
     }
 }
 
@@ -68,25 +73,30 @@ const updateSupplier = async (req, res) => {
         res.status(400).json('Must use a valid supplier id to update a supplier.');
     }
 
-    const supplierId = new ObjectId(req.params.id);
+    try {
 
-    const supplier = {
-        supplierName: req.body.supplierName,
-        supplierAddress:req.body.supplierAddress,
-        supplierTelephone: req.body.supplierTelephone,
-        supplierPersonel: req.body.supplierPersonel,
-    };
+        const supplierId = new ObjectId(req.params.id);
 
-    const response = await mongodb
-    .getDatabase()
-    .db('inventory')
-    .collection('suppliers')
-    .replaceOne({ _id: supplierId }, supplier); 
+        const supplier = {
+            supplierName: req.body.supplierName,
+            supplierAddress:req.body.supplierAddress,
+            supplierTelephone: req.body.supplierTelephone,
+            supplierPersonel: req.body.supplierPersonel,
+        };
 
-    if(response.modifiedCount > 0) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(response.error || 'Some error occurred while updating the supplier.');
+        const response = await mongodb
+        .getDatabase()
+        .db('inventory')
+        .collection('suppliers')
+        .replaceOne({ _id: supplierId }, supplier); 
+
+        if(response.modifiedCount > 0) {
+            res.status(204).send();
+        } else {
+            res.status(500).json(response.error || 'Some error occurred while updating the supplier.');
+        }
+    } catch (error) {
+        res.status(400).json({ message: error});
     }
 }
 
@@ -94,18 +104,23 @@ const deleteSupplier = async (req, res) => {
     if(!ObjectId.isValid(req.params.id)) {
         res.status(400).json('Must use a valid supplier id to delete a supplier.');
     }
-
-    const supplierId = new ObjectId(req.params.id);
-
-    const response = await mongodb
-    .getDatabase().db('inventory')
-    .collection('suppliers')
-    .deleteOne({ _id: supplierId });
-
-    if(response.deletedCount > 0) {
-        res.status(204).send();
-    } else {
-        res.status(404).json(response.error || 'Some error occurred while deleting the supplier.');
+    
+    try {
+    
+        const supplierId = new ObjectId(req.params.id);
+    
+        const response = await mongodb
+        .getDatabase().db('inventory')
+        .collection('suppliers')
+        .deleteOne({ _id: supplierId });
+    
+        if(response.deletedCount > 0) {
+            res.status(204).send();
+        } else {
+            res.status(404).json(response.error || 'Some error occurred while deleting the supplier.');
+        }
+    } catch (error) {
+        res.status(400).json({ message: error});
     }
 }
 

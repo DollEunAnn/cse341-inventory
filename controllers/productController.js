@@ -48,7 +48,9 @@ const createProduct = async (req, res) => {
             itemDescription:req.body.itemDescription,
             brand: req.body.brand,
             price: req.body.price,
-            itemType: req.body.itemType
+            itemType: req.body.itemType,
+            itemUnit: req.body.itemUnit,
+            itemStock: req.body.itemStock
         };
 
         const response = await mongodb
@@ -80,7 +82,9 @@ const updateProduct = async (req, res) => {
             itemDescription:req.body.itemDescription,
             brand: req.body.brand,
             price: req.body.price,
-            itemType: req.body.itemType
+            itemType: req.body.itemType,
+            itemUnit: req.body.itemUnit,
+            itemStock: req.body.itemStock
         };
     
         const response = await mongodb

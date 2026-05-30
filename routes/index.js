@@ -3,6 +3,11 @@ const passport = require('passport');
 
 router.use('/', require('./swagger'));
 router.get('/', (req, res) => {
+    
+    if (req.query.logout === 'success') {
+        return res.send('Logged out successfully!');
+    }
+
     res.send('Hello World!');
 });
 
@@ -15,7 +20,7 @@ router.get('/logout', function(req, res, next) {
         if (error) {
             return next(error);
         }
-        res.redirect('/');
+        res.redirect('/?logout=success');
     });
 });
 

@@ -3,7 +3,7 @@
 GET http://localhost:3000/products
 
 ### Get product by id
-GET http://localhost:3000/products/6a0b06e8cd235188acdd3798
+GET http://localhost:3000/products/6a1a2d0b6cf6e96f5572d29c
 
 ### Create a new product
 POST http://localhost:3000/products
@@ -14,7 +14,9 @@ content-type: application/json
     "itemDescription": "Tungsten Electrode",
     "brand": "No Brand",
     "price": 1000,
-    "itemType": "Consumable"
+    "itemType": "Consumable",
+    "itemUnit": "pcs",
+    "itemStock": 100
 }
 
 ### Update a product
@@ -26,7 +28,9 @@ content-type: application/json
     "itemDescription": "Tungsten Electrode 2.4x150mm Red",
     "brand": "No Brand",
     "price": 1001,
-    "itemType": "Consumable"
+    "itemType": "Consumable",
+    "itemUnit": "pcs",
+    "itemStock": 100
 }
 
 ### Delete a product
@@ -64,6 +68,6 @@ content-type: application/json
     "supplierPersonel": "Joy"
 }
 
-### Delete a product
+### Delete a supplier
 DELETE http://localhost:3000/suppliers/6a0c5b89f4676c91802261e6
 

@@ -6,7 +6,9 @@ const saveProduct = (req, res, next) => {
     itemDescription: 'required|string',
     brand: 'required|string',
     price: 'required|numeric',
-    itemType: 'required|string'
+    itemType: 'required|string',
+    itemUnit: 'required|string',
+    itemStock: 'required|numeric',
   };
   validator(req.body, validationRule, {}, (err, status) => {
     if (!status) {

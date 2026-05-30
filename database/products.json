@@ -1,14 +1,20 @@
-[{
-	"itemCode": "RMTR33",
-	"itemDescription": "Voltage Relay",
-	"brand": "Schneider",
-	"price": 2180,
-	"itemType": "Component"
-},
-{
-	"itemCode": "HCE-010",
-	"itemDescription": "BZ Buzzer",
-	"brand": "Wixim",
-	"price": 220,
-	"itemType": "Consumable"
-}]
+[
+  {
+    "itemCode": "RMTR33",
+    "itemDescription": "Voltage Relay",
+    "brand": "Schneider",
+    "price": 2180,
+    "itemType": "Component",
+    "itemUnit": "pcs",
+    "itemStock": 100
+  },
+  {
+    "itemCode": "HCE-010",
+    "itemDescription": "BZ Buzzer",
+    "brand": "Wixim",
+    "price": 220,
+    "itemType": "Consumable",
+    "itemUnit": "pcs",
+    "itemStock": 100
+  }
+]
